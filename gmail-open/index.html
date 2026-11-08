@@ -1,51 +1,51 @@
-<!doctype html>
-<html><head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Opening Gmail…</title>
-</head>
-<body style="font-family:-apple-system,system-ui,sans-serif;background:#fff;color:#333;text-align:center;padding:48px 24px">
-<p id="msg" style="font-size:17px">Opening Gmail…</p>
-<p id="manual" style="display:none">
-  <a id="weblink" href="#" style="font-size:17px;color:#1a73e8">Open in Gmail (web) →</a><br><br>
-  <a id="app2" href="#" style="font-size:15px;color:#666">Retry: open in Gmail app</a>
-</p>
-<script>
-// Payload rides the fragment: #cv=<threadId>&acc=<appAccountIndex>&u=<webUserIndex>&lab=<Inbox|all>
-var h = new URLSearchParams(location.hash.slice(1));
-var id = (h.get('cv') || '').toLowerCase();
-var acc = h.get('acc') !== null ? h.get('acc') : '0';
-var u = h.get('u') !== null ? h.get('u') : '0';
-var lab = h.get('lab') === 'all' ? 'all' : 'Inbox';
-var web = 'https://mail.google.com/mail/u/' + u + '/#cv/' + lab + '/' + id;
-var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) ||
-            (/Mac/.test(navigator.platform) && 'ontouchend' in document);
-function showManual() {
-  document.getElementById('msg').textContent = 'Gmail app did not open.';
-  document.getElementById('weblink').href = web;
-  document.getElementById('app2').href = 'googlegmail://cv=' + id + '/accountId=' + acc;
-  document.getElementById('manual').style.display = 'block';
-}
-if (!/^[0-9a-f]{10,20}$/.test(id)) {
-  document.getElementById('msg').textContent = 'No valid Gmail message id in this link.';
-} else if (!isIOS) {
-  location.replace(web);
-} else {
-  var tries = ['googlegmail://cv=' + id + '/accountId=' + acc,
-               'googlegmail:///cv=' + id + '/accountId=' + acc];
-  var i = 0, timer = null;
-  function next() {
-    if (i < tries.length) {
-      location.href = tries[i++];
-      timer = setTimeout(next, 1200);
-    } else {
-      showManual();
-    }
-  }
-  document.addEventListener('visibilitychange', function () {
-    if (document.hidden && timer) { clearTimeout(timer); timer = null; }
-  });
-  next();
-}
-</script>
-</body></html>
+1|<!doctype html>
+2|<html><head>
+3|<meta charset="utf-8">
+4|<meta name="viewport" content="width=device-width,initial-scale=1">
+5|<title>Opening Gmail…</title>
+6|</head>
+7|<body style="font-family:-apple-system,system-ui,sans-serif;background:#fff;color:#333;text-align:center;padding:48px 24px">
+8|<p id="msg" style="font-size:17px">Opening Gmail…</p>
+9|<p id="manual" style="display:none">
+10|  <a id="weblink" href="#" style="font-size:17px;color:#1a73e8">Open in Gmail (web) →</a><br><br>
+11|  <a id="app2" href="#" style="font-size:15px;color:#666">Retry: open in Gmail app</a>
+12|</p>
+13|<script>
+14|// Payload rides the fragment: #cv=<threadId>&acc=<appAccountIndex>&u=<webUserIndex>&lab=<Inbox|all>
+15|var h = new URLSearchParams(location.hash.slice(1));
+16|var id = (h.get('cv') || '').toLowerCase();
+17|var acc = h.get('acc') !== null ? h.get('acc') : '0';
+18|var u = h.get('u') !== null ? h.get('u') : '0';
+19|var lab = h.get('lab') === 'all' ? 'all' : 'Inbox';
+20|var web = 'https://mail.google.com/mail/u/' + u + '/#cv/' + lab + '/' + id;
+21|var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+22|            (/Mac/.test(navigator.platform) && 'ontouchend' in document);
+23|function showManual() {
+24|  document.getElementById('msg').textContent = 'Gmail app did not open.';
+25|  document.getElementById('weblink').href = web;
+26|  document.getElementById('app2').href = 'googlegmail://cv=' + id + '/accountId=' + acc;
+27|  document.getElementById('manual').style.display = 'block';
+28|}
+29|if (!/^[0-9a-f]{10,20}$/.test(id)) {
+30|  document.getElementById('msg').textContent = 'No valid Gmail message id in this link.';
+31|} else if (!isIOS) {
+32|  location.replace(web);
+33|} else {
+34|  var tries = ['googlegmail://cv=' + id + '/accountId=' + acc,
+35|               'googlegmail:///cv=' + id + '/accountId=' + acc];
+36|  var i = 0, timer = null;
+37|  function next() {
+38|    if (i < tries.length) {
+39|      location.href = tries[i++];
+40|      timer = setTimeout(next, 1200);
+41|    } else {
+42|      showManual();
+43|    }
+44|  }
+45|  document.addEventListener('visibilitychange', function () {
+46|    if (document.hidden && timer) { clearTimeout(timer); timer = null; }
+47|  });
+48|  next();
+49|}
+50|</script>
+51|</body></html>
